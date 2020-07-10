@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class TaskConnectionPool {
-
+    //todo spacing at the beginning of a class is a little bit uncommon
     private TaskConnectionPool() {
     }
 
@@ -29,7 +29,7 @@ public class TaskConnectionPool {
             DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/demodb");
             connection = ds.getConnection();
         } catch (NamingException | SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo improve exception handling
         }
         return connection;
     }

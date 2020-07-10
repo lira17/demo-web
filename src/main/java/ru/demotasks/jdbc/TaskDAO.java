@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDAO implements DAO<Task, Integer> {
-
+    //todo 2 empty lines at the beginning
 
     public TaskDAO() {
     }
@@ -27,16 +27,17 @@ public class TaskDAO implements DAO<Task, Integer> {
             statement.setString(4, task.getDueDate());
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo exception handling
         }
         closeConnection(connection);
+        //todo just return result without processing is bad practice : check results
         return result;
     }
 
     @Override
     public Task readById(Integer integer) {
         final Task result = new Task();
-        result.setId(-1);
+        result.setId(-1); // todo what is the meaning? It is usual approach for new tasks value objects prior saving to DB, but would it be used as new task?
 
         final Connection connection = TaskConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SQLTask.GET_ONE.QUERY)) {
@@ -50,9 +51,9 @@ public class TaskDAO implements DAO<Task, Integer> {
                 result.setDueDate(resultSet.getString("due_date"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo exception handling
         }
-        closeConnection(connection);
+        closeConnection(connection); // todo what if exception occurred, would this statement be executed?
         return result;
 
     }
@@ -73,9 +74,9 @@ public class TaskDAO implements DAO<Task, Integer> {
                 result.add(task);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo exceptino handling
         }
-        closeConnection(connection);
+        closeConnection(connection); // todo consider finally
         return result;
 
     }
@@ -92,7 +93,7 @@ public class TaskDAO implements DAO<Task, Integer> {
             statement.setInt(5, task.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo exception handling
         }
         closeConnection(connection);
         return result;
@@ -106,12 +107,13 @@ public class TaskDAO implements DAO<Task, Integer> {
             statement.setInt(1, id);
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //todo
         }
-        closeConnection(connection);
+        closeConnection(connection); ///todo
         return result;
     }
 
+    //todo utility method visible only here, consider smaller visibility scope
     public void closeConnection(Connection connection) {
         if (connection != null) {
             try {
@@ -122,6 +124,7 @@ public class TaskDAO implements DAO<Task, Integer> {
         }
     }
 
+    //  it may be enough to use string constants for SQL, but this works as well
     enum SQLTask {
         GET_ONE("SELECT * FROM tasks WHERE task_id = (?)"),
         GET_ALL("SELECT * FROM tasks"),
