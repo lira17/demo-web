@@ -1,6 +1,6 @@
 package ru.demotasks.servlets;
 
-import ru.demotasks.services.TaskService;
+import ru.demotasks.services.GoalService;
 import ru.demotasks.util.ServletUtil;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,59 +10,56 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = "/tasks/*")
-public class TaskServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/goals/*")
+public class GoalServlet extends HttpServlet {
 
-    private TaskService taskService;
+    private GoalService goalService;
 
     @Override
     public void init() throws ServletException {
-        taskService = new TaskService();
+        this.goalService = new GoalService();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int task_id = ServletUtil.getIdFromPath(req);
+        final int goal_id = ServletUtil.getIdFromPath(req);
+        final boolean isSubgoalsValid = ServletUtil.isSubgoalValid(req);
         final boolean userParameterIsValid = ServletUtil.parameterIsValid(req, "user_id");
-        final boolean goalParameterIsValid = ServletUtil.parameterIsValid(req, "goal_id");
-
-        String jsonTasks = "";
-
-        if (task_id < 0) {
+        String jsonGoal = "";
+        if (goal_id < 0) {
             resp.setContentType("text/plain; charset=UTF-8");
             PrintWriter writer = resp.getWriter();
-            writer.write("Invalid task_id");
+            writer.write("Invalid goal_id");
             resp.setStatus(404);
             return;
         }
-        if (task_id > 0) {
-            jsonTasks = taskService.getTaskByIdJson(task_id);
-        } else {
-            if (!userParameterIsValid && !goalParameterIsValid) {
-                jsonTasks = taskService.getAllTAsksJson();
-            }
-            if (userParameterIsValid) {
-                final int user_id = Integer.parseInt(req.getParameter("user_id"));
-                jsonTasks = taskService.getAllUserTasksJson(user_id);
-            }
-            if (goalParameterIsValid) {
-                final int goal_id = Integer.parseInt(req.getParameter("goal_id"));
-                jsonTasks = taskService.getAllTasksByGoalIdJson(goal_id);
-            }
+        if (goal_id == 0 && !userParameterIsValid) {
+            jsonGoal = goalService.getAllGoalsJson();
+        }
+        if (goal_id == 0 && userParameterIsValid) {
+            final int user_id = Integer.parseInt(req.getParameter("user_id"));
+            jsonGoal = goalService.getAllUserGoalsJson(user_id);
+        }
+        if (goal_id > 0 && !isSubgoalsValid) {
+            jsonGoal = goalService.getGoalJson(goal_id);
+        }
+        if (goal_id > 0 && isSubgoalsValid) {
+            jsonGoal = goalService.getSubgoals(goal_id);
         }
         resp.setContentType("application/json; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        writer.write(jsonTasks);
+        writer.write(jsonGoal);
         resp.setStatus(200);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         if (ServletUtil.parameterIsValid(req, "user_id")) {
             final int user_id = Integer.parseInt(req.getParameter("user_id"));
-            final int task_id = taskService.createTask(req, user_id);
-            if (task_id > 0) {
-                resp.addHeader("Location", "/tasks/" + task_id);
+            final int goal_id = goalService.createGoal(req, user_id);
+            if (goal_id > 0) {
+                resp.addHeader("Location", "/goals/" + goal_id);
                 resp.setStatus(201);
             } else {
                 resp.setContentType("text/plain; charset=UTF-8");
@@ -75,27 +72,21 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int task_id = ServletUtil.getIdFromPath(req);
+        final int goal_id = ServletUtil.getIdFromPath(req);
+        final boolean parentgoalIdIsValid = ServletUtil.parameterIsValid(req, "parentgoal_id");
         resp.setContentType("text/plain; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        if (task_id < 0) {
-            writer.write("Invalid task_id");
+        if (goal_id < 0) {
+            writer.write("Invalid goal_id");
             resp.setStatus(404);
             return;
         }
-        if (ServletUtil.parameterIsValid(req, "friend_id") &&
-                ServletUtil.parameterIsValid(req, "user_id")) {
-            final int user_id = Integer.parseInt(req.getParameter("user_id"));
-            final int friend_id = Integer.parseInt(req.getParameter("friend_id"));
-            final boolean result = taskService.giveTaskToFriend(user_id, friend_id, task_id);
-            if (result) {
-                resp.setStatus(204);
-            } else {
-                writer.write("Users are not friends");
-                resp.setStatus(403);
-            }
-        } else {
-            final boolean result = taskService.changeTask(req, task_id);
+        if (parentgoalIdIsValid) {
+            final int parentgoal_id = Integer.parseInt(req.getParameter("parentgoal_id"));
+            goalService.addParentgoal(goal_id, parentgoal_id);
+        }
+        if (!parentgoalIdIsValid) {
+            final boolean result = goalService.updateGoal(req, goal_id);
             if (result) {
                 resp.setStatus(204);
             } else {
@@ -107,14 +98,14 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int task_id = ServletUtil.getIdFromPath(req);
-        if (task_id > 0) {
-            taskService.deleteTask(task_id);
+        final int goal_id = ServletUtil.getIdFromPath(req);
+        if (goal_id > 0) {
+            goalService.deleteGoal(goal_id);
             resp.setStatus(204);
         } else {
             resp.setContentType("text/plain; charset=UTF-8");
             PrintWriter writer = resp.getWriter();
-            writer.write("Invalid task_id");
+            writer.write("Invalid goal_id");
             resp.setStatus(404);
         }
     }
