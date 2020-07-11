@@ -1,27 +1,26 @@
 package ru.demotasks.model;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ru.demotasks.util.LocalDateDeserializer;
+import ru.demotasks.util.LocalDateSerializer;
+import java.time.LocalDate;
 
-
-@JsonPropertyOrder({"id", "goalId", "title", "description", "status", "dueDate"})
+@JsonPropertyOrder({"id", "user_id", "goalId", "title", "description", "is_done", "dueDate"})
 public class Task {
 
     private int id;
+    private int user_id;
+    private int goalId;
     private String title;
     private String description;
     private boolean isDone;
-    private String dueDate;
-
-    public Task(int id, String title, String description, boolean isDone, String dueDate) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.isDone = isDone;
-        this.dueDate = dueDate;
-    }
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dueDate;
 
     public Task() {
-
     }
 
     public int getId() {
@@ -32,6 +31,21 @@ public class Task {
         this.id = id;
     }
 
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getGoalId() {
+        return goalId;
+    }
+
+    public void setGoalId(int goal_id) {
+        this.goalId = goal_id;
+    }
 
     public String getTitle() {
         return title;
@@ -57,11 +71,11 @@ public class Task {
         this.isDone = done;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 }
