@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/goals/*")
 public class GoalServlet extends HttpServlet {
-
     private GoalService goalService;
 
     @Override
