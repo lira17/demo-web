@@ -13,8 +13,7 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/users/*")
 public class UserServlet extends HttpServlet {
-
-    UserService userService;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
