@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 abstract class BaseDAO {
-
     private final static Logger logger = Logger.getLogger(BaseDAO.class);
 
     protected void closeConnection(Connection connection) {
