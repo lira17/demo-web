@@ -12,7 +12,6 @@ import java.util.List;
  * Class with CRUD operations for {@link Task}
  */
 public class TaskDAO extends BaseDAO implements EntityDAO<Task, Integer> {
-
     private final static Logger logger = Logger.getLogger(TaskDAO.class);
 
     @Override
