@@ -11,7 +11,6 @@ import java.util.List;
  * to interact with {@link FriendsDAO}
  */
 public class FriendsService {
-
     final FriendsDAO friendsDAO = new FriendsDAO();
 
     public String getAllFriendsJson(int user_id) throws JsonProcessingException {
