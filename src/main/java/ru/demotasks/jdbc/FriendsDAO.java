@@ -15,7 +15,6 @@ import java.util.List;
  */
 
 public class FriendsDAO extends BaseDAO {
-
     private final static Logger logger = Logger.getLogger(FriendsDAO.class);
 
     public List<User> readAll(Integer user_id) {
