@@ -15,7 +15,6 @@ import java.util.List;
  */
 
 public class UserDAO extends BaseDAO implements EntityDAO<User, Integer> {
-
     private final static Logger logger = Logger.getLogger(UserDAO.class);
 
     @Override
