@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"id","user_id","title", "description"})
 public class Goal {
-
     private int id;
     private int user_id;
     private String title;
