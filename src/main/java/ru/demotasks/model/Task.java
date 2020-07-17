@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 @JsonPropertyOrder({"id", "user_id", "goalId", "title", "description", "is_done", "dueDate"})
 public class Task {
-
     private int id;
     private int user_id;
     private int goalId;
