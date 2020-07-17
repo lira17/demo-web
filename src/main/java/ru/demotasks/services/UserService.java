@@ -15,7 +15,6 @@ import java.util.List;
  * to interact with {@link UserDAO}
  */
 public class UserService {
-
     final UserDAO userDAO = new UserDAO();
 
     public String getAllUsersJson() throws JsonProcessingException {
