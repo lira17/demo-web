@@ -13,7 +13,6 @@ import java.util.List;
  * Class with CRUD operations for {@link Goal}
  */
 public class GoalDAO extends BaseDAO implements EntityDAO<Goal, Integer> {
-
     private final static Logger logger = Logger.getLogger(GoalDAO.class);
 
     @Override
