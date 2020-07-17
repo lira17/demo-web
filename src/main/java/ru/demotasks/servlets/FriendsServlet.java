@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/friends")
 public class FriendsServlet extends HttpServlet {
-
     private FriendsService friendsService;
 
     @Override
