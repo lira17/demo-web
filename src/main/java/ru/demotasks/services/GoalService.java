@@ -15,7 +15,6 @@ import java.util.List;
  */
 
 public class GoalService {
-
     final GoalDAO goalDAO = new GoalDAO();
 
     public String getAllGoalsJson() throws JsonProcessingException {
