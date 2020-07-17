@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/tasks/*")
 public class TaskServlet extends HttpServlet {
-
     private TaskService taskService;
 
     @Override
