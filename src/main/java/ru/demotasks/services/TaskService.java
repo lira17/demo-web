@@ -15,7 +15,6 @@ import java.util.List;
  * to interact with {@link TaskDAO}
  */
 public class TaskService {
-
     final TaskDAO taskDAO = new TaskDAO();
 
     public String getAllTAsksJson() throws JsonProcessingException {
