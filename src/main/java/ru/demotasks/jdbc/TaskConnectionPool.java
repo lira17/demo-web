@@ -15,13 +15,13 @@ import java.sql.SQLException;
 
 public class TaskConnectionPool {
     private final static Logger logger = Logger.getLogger(TaskConnectionPool.class);
+    
+    private static TaskConnectionPool instance = null;
 
     private TaskConnectionPool() {
     }
 
-    private static TaskConnectionPool instance = null;
-
-    public static TaskConnectionPool getInstance() {
+    synchronized public static TaskConnectionPool getInstance() {
         if (instance == null) {
             instance = new TaskConnectionPool();
         }
