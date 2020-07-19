@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public final class TaskConnectionPool {
     private final static Logger logger = Logger.getLogger(TaskConnectionPool.class);
     
-    private static TaskConnectionPool instance = null;
+    private static TaskConnectionPool instance;
 
     private TaskConnectionPool() {
     }
