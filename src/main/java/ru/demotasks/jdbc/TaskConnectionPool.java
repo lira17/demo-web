@@ -30,7 +30,7 @@ public class TaskConnectionPool {
 
     public Connection getConnection() {
         Context ctx;
-        Connection connection = null;
+        Connection connection;
         try {
             ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/tasksdb");
